@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="adaptive">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/adaptive" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/alwaysencrypted" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/azureactivedirectoryauthentication" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/connections" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/constrained" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/dataclassification" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/datatypes" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/resultsets" />
+      <root url="file://$PROJECT_DIR$/../../JDBCDriver/sqljdbc_12.6/rus/samples/sparse" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/build/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/demo/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/generated/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/legacy/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/core-api/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/core-impl/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/protocol-impl/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/user-api/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/user-impl/java" />
+      <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/test/java" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0" recursive="false" />
+  </library>
+</component>
