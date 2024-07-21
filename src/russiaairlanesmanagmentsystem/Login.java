@@ -67,8 +67,6 @@ public class Login extends JFrame implements ActionListener {
             jpfPassword.setText("");
         }
         if (e.getSource() == jbSubmit) {
-            //String username = jtfUsername.getText();
-            //String password = jpfPassword.getText();
             try {
                 Connections newConnection = new Connections();
 
@@ -81,7 +79,7 @@ public class Login extends JFrame implements ActionListener {
                 ResultSet result = preparedStatement.executeQuery();
 
                 if (result.next()) {
-                    System.out.println("Valid. Connected.");
+                    JOptionPane.showMessageDialog(null, "Valid. Connected");
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username of password");
