@@ -10,12 +10,6 @@ public class Login extends JFrame implements ActionListener {
     JTextField jtfUsername;
     JPasswordField jpfPassword;
     public Login() {
-        setVisible(true);
-        setSize(400,300);
-        setTitle("Login form");
-        setLocation(920,520);
-        setLayout(null);
-
         //Username label
         JLabel lblUsername = new JLabel("Username: "); //Creating label
         lblUsername.setBounds(20,20,100,20); // Entering position of new label (fixed XYWH)
@@ -53,6 +47,12 @@ public class Login extends JFrame implements ActionListener {
         jbExit.setBounds(200,220,100,20);
         jbExit.addActionListener(this);
         add(jbExit);
+
+        setVisible(true);
+        setSize(400,300);
+        setTitle("Login form");
+        setLocation(920,520);
+        setLayout(null);
     }
 
     @Override

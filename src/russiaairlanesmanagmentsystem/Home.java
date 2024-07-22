@@ -1,26 +1,21 @@
 package russiaairlanesmanagmentsystem;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class Home extends JFrame implements ActionListener {
     public Home() {
-        setVisible(true);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setTitle("Home page");
-
         ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("russiaairlanesmanagmentsystem/img/plane-main-background.jpg"));
         JLabel backgroundImage = new JLabel(imageIcon);
         backgroundImage.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         add(backgroundImage);
 
-        JLabel headingLabel = new JLabel("Welcome to Russia airlanes managment system");
+        /* JLabel headingLabel = new JLabel("Welcome to Russia airlanes managment system");
         headingLabel.setBounds(500,10,1000,200);
         headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         headingLabel.setForeground(Color.BLACK);
         headingLabel.setFont(new Font("Serif", Font.PLAIN, 40));
-        backgroundImage.add(headingLabel);
+        backgroundImage.add(headingLabel); */
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -74,6 +69,10 @@ public class Home extends JFrame implements ActionListener {
         ticket.add(boardingPass);
         boardingPass.addActionListener(this);
         boardingPass.setActionCommand("BoardingPass");
+
+        setVisible(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setTitle("Home page");
     }
 
     @Override
@@ -85,7 +84,7 @@ public class Home extends JFrame implements ActionListener {
 
         }
         if (e.getActionCommand().equals("AddCustomerDetails")) {
-
+            new AddCustomer();
         }
         if (e.getActionCommand().equals("ReservationDetails")) {
 
