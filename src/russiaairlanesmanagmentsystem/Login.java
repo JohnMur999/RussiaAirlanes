@@ -13,9 +13,7 @@ public class Login extends JFrame implements ActionListener {
         setVisible(true);
         setSize(400,300);
         setTitle("Login form");
-
-        //Setting background color
-        //getContentPane().setBackground(Color.white);
+        setLocation(920,520);
         setLayout(null);
 
         //Username label
@@ -60,7 +58,7 @@ public class Login extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbExit) {
-            setVisible(false);
+            System.exit(0);
         }
         if (e.getSource() == jbReset) {
             jtfUsername.setText("");
@@ -80,6 +78,7 @@ public class Login extends JFrame implements ActionListener {
 
                 if (result.next()) {
                     JOptionPane.showMessageDialog(null, "Valid. Connected");
+                    new Home().setVisible(true);
                     setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username of password");
@@ -92,7 +91,7 @@ public class Login extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        Login login = new Login();
+        new Login();
     }
 
 
