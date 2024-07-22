@@ -2,6 +2,7 @@
   <library name="adaptive">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0" />
+      <root url="jar://$PROJECT_DIR$/../../rs2xml/rs2xml.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -24,6 +25,7 @@
       <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/user-api/java" />
       <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/main/user-impl/java" />
       <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0/src/test/java" />
+      <root url="jar://$PROJECT_DIR$/../../rs2xml/rs2xml.jar!/src" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0" recursive="false" />
   </library>

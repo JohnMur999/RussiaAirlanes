@@ -90,7 +90,7 @@ public class Home extends JFrame implements ActionListener {
 
         }
         if (e.getActionCommand().equals("BookFlights")) {
-
+            new FlightInfo();
         }
         if (e.getActionCommand().equals("JourneyDetails")) {
 

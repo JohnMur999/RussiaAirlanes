@@ -4,13 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class AddCustomer extends JFrame implements ActionListener {
+
     JLabel customerName, customerNationality, customerNumber, customerAddress, customerGender;
     JTextField customerNameField, customerNationalityField, customerNumberField, customerAddressField;
     ButtonGroup buttonGroup = new ButtonGroup();
     JRadioButton rbMale, rbFemale, rbOther;
     JButton resetButton, addCustomerButton, backButton;
+
     public AddCustomer() {
         getContentPane().setBackground(Color.WHITE);
         setTitle("Add Customer");
@@ -116,9 +120,31 @@ public class AddCustomer extends JFrame implements ActionListener {
                     gender = rbFemale.getText();
                 } else if (rbOther.isSelected()) {
                     gender = rbOther.getText();
-                } if (name.isEmpty() || nationality.isEmpty() || number.isEmpty() || address.isEmpty() || gender.isEmpty()) {
+                }
+                if (name.isEmpty() || nationality.isEmpty() || number.isEmpty() || address.isEmpty() || gender.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please fill all the fields");
-            }
+                } else {
+                    try {
+                        Connections newConnection = new Connections();
+                        String query = "insert into passenger values(?,?,?,?,?)";
+                        PreparedStatement preparedStatement = newConnection.connection.prepareStatement(query);
+                        preparedStatement.setString(1, name);
+                        preparedStatement.setString(2, nationality);
+                        preparedStatement.setString(3, number);
+                        preparedStatement.setString(4, address);
+                        preparedStatement.setString(5, gender);
+                        int rowsInserted = preparedStatement.executeUpdate();
+                        if (rowsInserted > 0) {
+                            JOptionPane.showMessageDialog(this, "Customer added successfully");
+                        }
+                        preparedStatement.close();
+                        newConnection.connection.close();
+                        setVisible(false);
+                    } catch (SQLException exception) {
+                        exception.printStackTrace();
+                        JOptionPane.showMessageDialog(this, "Error while adding customer");
+                    }
+                }
         }
         if (e.getActionCommand().equals("reset")) {
             customerNameField.setText("");
