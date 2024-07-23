@@ -85,19 +85,19 @@ public class AddCustomer extends JFrame implements ActionListener {
         buttonGroup.add(rbOther);
 
         addCustomerButton = new JButton("Add");
-        addCustomerButton.setBounds(20, 350, 100, 35);
+        addCustomerButton.setBounds(20, 400, 100, 35);
         addCustomerButton.addActionListener(this);
         addCustomerButton.setActionCommand("addCustomer");
         customerBackground.add(addCustomerButton);
 
         backButton = new JButton("Back");
-        backButton.setBounds(130, 350, 100, 35);
+        backButton.setBounds(130, 400, 100, 35);
         backButton.addActionListener(this);
         backButton.setActionCommand("back");
         customerBackground.add(backButton);
 
         resetButton = new JButton("Reset");
-        resetButton.setBounds(240, 350, 100, 35);
+        resetButton.setBounds(240, 400, 100, 35);
         resetButton.addActionListener(this);
         resetButton.setActionCommand("reset");
         customerBackground.add(resetButton);
@@ -124,26 +124,7 @@ public class AddCustomer extends JFrame implements ActionListener {
                 if (name.isEmpty() || nationality.isEmpty() || number.isEmpty() || address.isEmpty() || gender.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please fill all the fields");
                 } else {
-                    try {
-                        Connections newConnection = new Connections();
-                        String query = "insert into passenger values(?,?,?,?,?)";
-                        PreparedStatement preparedStatement = newConnection.connection.prepareStatement(query);
-                        preparedStatement.setString(1, name);
-                        preparedStatement.setString(2, nationality);
-                        preparedStatement.setString(3, number);
-                        preparedStatement.setString(4, address);
-                        preparedStatement.setString(5, gender);
-                        int rowsInserted = preparedStatement.executeUpdate();
-                        if (rowsInserted > 0) {
-                            JOptionPane.showMessageDialog(this, "Customer added successfully");
-                        }
-                        preparedStatement.close();
-                        newConnection.connection.close();
-                        setVisible(false);
-                    } catch (SQLException exception) {
-                        exception.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error while adding customer");
-                    }
+                    new GenerateCustomer(name,nationality,number, address, gender);
                 }
         }
         if (e.getActionCommand().equals("reset")) {

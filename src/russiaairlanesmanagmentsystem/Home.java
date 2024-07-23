@@ -81,7 +81,7 @@ public class Home extends JFrame implements ActionListener {
             System.exit(0);
         }
         if (e.getActionCommand().equals("FlightDetails")) {
-
+            new FlightInfo();
         }
         if (e.getActionCommand().equals("AddCustomerDetails")) {
             new AddCustomer();
@@ -90,7 +90,7 @@ public class Home extends JFrame implements ActionListener {
 
         }
         if (e.getActionCommand().equals("BookFlights")) {
-            new FlightInfo();
+
         }
         if (e.getActionCommand().equals("JourneyDetails")) {
 
