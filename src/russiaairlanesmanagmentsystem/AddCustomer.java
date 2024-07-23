@@ -140,7 +140,4 @@ public class AddCustomer extends JFrame implements ActionListener {
             setVisible(false);
         }
     }
-    public static void main(String[] args) {
-        new AddCustomer();
-    }
 }

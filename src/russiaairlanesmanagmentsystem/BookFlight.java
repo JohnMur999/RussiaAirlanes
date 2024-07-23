@@ -90,7 +90,7 @@ public class BookFlight extends JFrame implements ActionListener {
         bookFlightBackground.add(thCustomerGender);
 
         flyFromLabel = new JLabel("Fly From:");
-        flyFromLabel.setBounds(20,350,150,35);
+        flyFromLabel.setBounds(20,350,130,35);
         flyFromLabel.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
         bookFlightBackground.add(flyFromLabel);
 
@@ -99,8 +99,10 @@ public class BookFlight extends JFrame implements ActionListener {
         source.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
         bookFlightBackground.add(source);
 
+        getInfoFromFlightTableForChoice(source, "source","select * from flight");
+
         flyToLabel = new JLabel("Fly To:");
-        flyToLabel.setBounds(20,400,150,35);
+        flyToLabel.setBounds(20,400,130,35);
         flyToLabel.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
         bookFlightBackground.add(flyToLabel);
 
@@ -108,6 +110,8 @@ public class BookFlight extends JFrame implements ActionListener {
         destination.setBounds(160,400,150,35);
         destination.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
         bookFlightBackground.add(destination);
+
+        getInfoFromFlightTableForChoice(destination, "destination","select * from flight");
 
         fetchFlightButton = new JButton("Fetch Flights");
         fetchFlightButton.setBounds(320,400,150,35);
@@ -163,6 +167,49 @@ public class BookFlight extends JFrame implements ActionListener {
         }
         return uid;
     }
+
+    private static ResultSet getInfoFromFlightTableForChoice (Choice choice , String nameOfColumn,String query) {
+        ResultSet rs = null;
+        try {
+            Connections conn = new Connections();
+            rs = conn.statement.executeQuery(query);
+            while (rs.next()) {
+                choice.add(rs.getString(nameOfColumn));
+            }
+            rs.close();
+            conn.connection.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        if (rs == null) {
+            JOptionPane.showMessageDialog(null, "No data found.");
+        }
+        return rs;
+    }
+
+    private static void getInfoFromFlightTableForTextHolders (JLabel lbl1, JLabel lbl2, Choice choice1, Choice choice2, String query) {
+        lbl1.setText("No flights found");
+        lbl2.setText("No code found");
+        String src = choice1.getSelectedItem();
+        String dest = choice2.getSelectedItem();
+        try {
+            Connections conn = new Connections();
+            PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
+            preparedStatement.setString(1, src);
+            preparedStatement.setString(2, dest);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                lbl1.setText(rs.getString("f_name"));
+                lbl2.setText(rs.getString("f_code"));
+            }
+            rs.close();
+            preparedStatement.close();
+            conn.connection.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == fetchCustomerButton) {
@@ -182,7 +229,8 @@ public class BookFlight extends JFrame implements ActionListener {
                         thCustomerNumber.setText(rs.getString("phone"));
                         thCustomerGender.setText(rs.getString("gender"));
                     } else {
-                        JOptionPane.showMessageDialog(null, "Cannot find customer with UID " + findedCustomerUID);
+                        JOptionPane.showMessageDialog(null, "Cannot find customer with UID "
+                                + findedCustomerUID);
                         thCustomerName.setText("");
                         thCustomerAddress.setText("");
                         thCustomerNationality.setText("");
@@ -198,15 +246,38 @@ public class BookFlight extends JFrame implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(null, "Customer not found");
             }
+        }
             if (e.getSource() == fetchFlightButton) {
+                getInfoFromFlightTableForTextHolders(thFlightName, thFlightCode,source, destination,
+                        "SELECT * FROM flight WHERE source = ? AND destination = ?");
 
+                /*
+                String src = source.getSelectedItem();
+                String dst = destination.getSelectedItem();
+                try {
+                    Connections conn = new Connections();
+                    String query = "SELECT f_name FROM flight WHERE source = ? AND destination = ?";
+                    PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
+                    preparedStatement.setString(1, src);
+                    preparedStatement.setString(2, dst);
+                    ResultSet rs = preparedStatement.executeQuery();
+                    while (rs.next()) {
+                        thFlightName.setText(rs.getString("f_name"));
+                    }
+                    rs.close();
+                    preparedStatement.close();
+                    conn.connection.close();
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }*/
             }
             if (e.getSource() == bookFlightButton) {
 
             }
         }
-    }
     public static void main(String[] args) {
         new BookFlight();
     }
 }
+
+
