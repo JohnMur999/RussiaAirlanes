@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
+
 import com.toedter.calendar.JDateChooser;
 
 public class BookFlight extends JFrame implements ActionListener {
@@ -217,13 +219,13 @@ public class BookFlight extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == fetchCustomerButton) {
                 try {
-                    int findedCustomerUID = findCustomerByUID(customerUIDField.getText());
-                    if (findedCustomerUID != -1) {
+                    int foundedCustomerUID = findCustomerByUID(customerUIDField.getText());
+                    if (foundedCustomerUID != -1) {
                         try {
                             Connections conn = new Connections();
                             String query = "SELECT name, address, nationality, phone, gender FROM passenger WHERE uid = ?";
                             PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
-                            preparedStatement.setInt(1, findedCustomerUID);
+                            preparedStatement.setInt(1, foundedCustomerUID);
 
                             ResultSet rs = preparedStatement.executeQuery();
                             if (rs.next()) {
@@ -234,7 +236,7 @@ public class BookFlight extends JFrame implements ActionListener {
                                 thCustomerGender.setText(rs.getString("gender"));
                             } else {
                                 JOptionPane.showMessageDialog(null, "Cannot find customer with UID "
-                                        + findedCustomerUID);
+                                        + foundedCustomerUID);
                                 thCustomerName.setText("");
                                 thCustomerAddress.setText("");
                                 thCustomerNationality.setText("");
@@ -259,7 +261,53 @@ public class BookFlight extends JFrame implements ActionListener {
                         "SELECT * FROM flight WHERE source = ? AND destination = ?");
             }
             if (e.getSource() == bookFlightButton) {
+                String uid = customerUIDField.getText();
+                String name = thCustomerName.getText();
+                String nationality = thCustomerNationality.getText();
+                String phone = thCustomerNumber.getText();
+                String src = source.getSelectedItem();
+                String dest = destination.getSelectedItem();
+                String flightName = thFlightName.getText();
+                String flightCode = thFlightCode.getText();
+                String dateOfTravel = ((JTextField) dcCalendar.getDateEditor().getUiComponent()).getText();
+                if (flightName.isEmpty() || flightCode.isEmpty() || dateOfTravel.isEmpty()
+                        || uid.isEmpty() || name.isEmpty() || nationality.isEmpty()
+                        || phone.isEmpty() || src.isEmpty() || dest.isEmpty()
+                        || flightName.equals("No flights found") || flightCode.equals("No code found")) {
+                    JOptionPane.showMessageDialog(null, "Please fill all the fields");
+                } else {
+                    try {
+                        Connections conn = new Connections();
+                        String query = "INSERT INTO reservation (PNR, TICKET, name, nationality, flightname, " +
+                                "flightcode, src, des, ddate, uid, phone) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
+                        Random random = new Random();
+                        int pnr = random.nextInt(100000);
+                        int ticket = random.nextInt(100000);
+                        preparedStatement.setString(1, Integer.toString(pnr));
+                        preparedStatement.setString(2, Integer.toString(ticket));
+                        preparedStatement.setString(3, name);
+                        preparedStatement.setString(4, nationality);
+                        preparedStatement.setString(5, flightName);
+                        preparedStatement.setString(6, flightCode);
+                        preparedStatement.setString(7, src);
+                        preparedStatement.setString(8, dest);
+                        preparedStatement.setString(9, dateOfTravel);
+                        preparedStatement.setString(10, uid);
+                        preparedStatement.setString(11, phone);
 
+                        int rowsInserted = preparedStatement.executeUpdate();
+                        if (rowsInserted > 0) {
+                            JOptionPane.showMessageDialog(this, "Reservation successful!");
+                        }
+
+                        preparedStatement.close();
+                        conn.connection.close();
+                    } catch (SQLException exception) {
+                        exception.printStackTrace();
+                    }
+                }
             }
         }
     public static void main(String[] args) {
