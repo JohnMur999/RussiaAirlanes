@@ -4,15 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+//import com.toedter.calendar.JDateChooser;
 
 public class BookFlight extends JFrame implements ActionListener {
     JLabel customerUID, customerName, customerNationality, customerNumber, customerAddress, customerGender,
-           thCustomerName, thCustomerNationality, thCustomerNumber, thCustomerAddress, thCustomerGender;
+           thCustomerName, thCustomerNationality, thCustomerNumber, thCustomerAddress, thCustomerGender,
+            flyFromLabel, flyToLabel, flightName, flightCode, dateOfTravel, thFlightName, thFlightCode;
+    Choice destination, source;
+    //JDateChooser dcCalendar;
     JTextField customerUIDField;
-    JButton fetchCustomerButton, FetchFlightButton, bookFlightButton;
+    JButton fetchCustomerButton, fetchFlightButton, bookFlightButton;
     public BookFlight() {
         getContentPane().setBackground(Color.WHITE);
         setTitle("Book Flight");
@@ -85,7 +89,64 @@ public class BookFlight extends JFrame implements ActionListener {
         thCustomerGender.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
         bookFlightBackground.add(thCustomerGender);
 
-        setSize(900, 500);
+        flyFromLabel = new JLabel("Fly From:");
+        flyFromLabel.setBounds(20,350,150,35);
+        flyFromLabel.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(flyFromLabel);
+
+        source = new Choice();
+        source.setBounds(160,350,150,35);
+        source.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(source);
+
+        flyToLabel = new JLabel("Fly To:");
+        flyToLabel.setBounds(20,400,150,35);
+        flyToLabel.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(flyToLabel);
+
+        destination = new Choice();
+        destination.setBounds(160,400,150,35);
+        destination.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(destination);
+
+        fetchFlightButton = new JButton("Fetch Flights");
+        fetchFlightButton.setBounds(320,400,150,35);
+        fetchFlightButton.addActionListener(this);
+        bookFlightBackground.add(fetchFlightButton);
+
+        flightName = new JLabel("Flight Name:");
+        flightName.setBounds(20,450,150,35);
+        flightName.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(flightName);
+
+        thFlightName = new JLabel("");
+        thFlightName.setBounds(160,450,150,35);
+        thFlightName.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(thFlightName);
+
+        flightCode = new JLabel("Flight Code:");
+        flightCode.setBounds(20,500,150,35);
+        flightCode.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(flightCode);
+
+        thFlightCode = new JLabel("");
+        thFlightCode.setBounds(160,500,150,35);
+        thFlightCode.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        bookFlightBackground.add(thFlightCode);
+
+        dateOfTravel = new JLabel("Date of Travel:");
+        dateOfTravel.setFont(new Font("BLACK-ITALIC", Font.PLAIN, 18));
+        dateOfTravel.setBounds(20,550,150,35);
+        bookFlightBackground.add(dateOfTravel);
+
+        //dcCalendar = new
+
+        bookFlightButton = new JButton("Book Flight");
+        bookFlightButton.setBounds(160,600,150,35);
+        bookFlightButton.addActionListener(this);
+        bookFlightBackground.add(bookFlightButton);
+
+        setSize(900,740);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -105,16 +166,43 @@ public class BookFlight extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == fetchCustomerButton) {
-            if (findCustomerByUID(fetchCustomerButton.getText()) != -1) {
+            int findedCustomerUID = findCustomerByUID(customerUIDField.getText());
+            if (findedCustomerUID != -1) {
+                try {
+                    Connections conn = new Connections();
+                    String query = "SELECT name, address, nationality, phone, gender FROM passenger WHERE uid = ?";
+                    PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
+                    preparedStatement.setInt(1, findedCustomerUID);
 
-                /*
-                thCustomerName.setText();
-                thCustomerAddress.setText();
-                thCustomerNationality.setText();
-                thCustomerNumber.setText();
-                thCustomerGender.setText(); */
+                    ResultSet rs = preparedStatement.executeQuery();
+                    if (rs.next()) {
+                        thCustomerName.setText(rs.getString("name"));
+                        thCustomerAddress.setText(rs.getString("address"));
+                        thCustomerNationality.setText(rs.getString("nationality"));
+                        thCustomerNumber.setText(rs.getString("phone"));
+                        thCustomerGender.setText(rs.getString("gender"));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cannot find customer with UID " + findedCustomerUID);
+                        thCustomerName.setText("");
+                        thCustomerAddress.setText("");
+                        thCustomerNationality.setText("");
+                        thCustomerNumber.setText("");
+                        thCustomerGender.setText("");
+                    }
+                    rs.close();
+                    preparedStatement.close();
+                    conn.connection.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Customer not found");
+            }
+            if (e.getSource() == fetchFlightButton) {
+
+            }
+            if (e.getSource() == bookFlightButton) {
+
             }
         }
     }

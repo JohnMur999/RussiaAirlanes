@@ -2,6 +2,7 @@ package russiaairlanesmanagmentsystem;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.print.Book;
 
 public class Home extends JFrame implements ActionListener {
     public Home() {
@@ -90,7 +91,7 @@ public class Home extends JFrame implements ActionListener {
 
         }
         if (e.getActionCommand().equals("BookFlights")) {
-
+            new BookFlight();
         }
         if (e.getActionCommand().equals("JourneyDetails")) {
 
