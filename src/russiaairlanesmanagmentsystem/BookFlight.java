@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JDateChooser;
 
 public class BookFlight extends JFrame implements ActionListener {
     JLabel customerUID, customerName, customerNationality, customerNumber, customerAddress, customerGender,
            thCustomerName, thCustomerNationality, thCustomerNumber, thCustomerAddress, thCustomerGender,
             flyFromLabel, flyToLabel, flightName, flightCode, dateOfTravel, thFlightName, thFlightCode;
     Choice destination, source;
-    //JDateChooser dcCalendar;
+    JDateChooser dcCalendar;
     JTextField customerUIDField;
     JButton fetchCustomerButton, fetchFlightButton, bookFlightButton;
     public BookFlight() {
@@ -143,7 +143,10 @@ public class BookFlight extends JFrame implements ActionListener {
         dateOfTravel.setBounds(20,550,150,35);
         bookFlightBackground.add(dateOfTravel);
 
-        //dcCalendar = new
+        dcCalendar = new JDateChooser();
+        dcCalendar.setBounds(160,550,150,35);
+        dcCalendar.setDateFormatString("dd/MM/yyyy");
+        bookFlightBackground.add(dcCalendar);
 
         bookFlightButton = new JButton("Book Flight");
         bookFlightButton.setBounds(160,600,150,35);
@@ -213,63 +216,47 @@ public class BookFlight extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == fetchCustomerButton) {
-            int findedCustomerUID = findCustomerByUID(customerUIDField.getText());
-            if (findedCustomerUID != -1) {
                 try {
-                    Connections conn = new Connections();
-                    String query = "SELECT name, address, nationality, phone, gender FROM passenger WHERE uid = ?";
-                    PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
-                    preparedStatement.setInt(1, findedCustomerUID);
+                    int findedCustomerUID = findCustomerByUID(customerUIDField.getText());
+                    if (findedCustomerUID != -1) {
+                        try {
+                            Connections conn = new Connections();
+                            String query = "SELECT name, address, nationality, phone, gender FROM passenger WHERE uid = ?";
+                            PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
+                            preparedStatement.setInt(1, findedCustomerUID);
 
-                    ResultSet rs = preparedStatement.executeQuery();
-                    if (rs.next()) {
-                        thCustomerName.setText(rs.getString("name"));
-                        thCustomerAddress.setText(rs.getString("address"));
-                        thCustomerNationality.setText(rs.getString("nationality"));
-                        thCustomerNumber.setText(rs.getString("phone"));
-                        thCustomerGender.setText(rs.getString("gender"));
+                            ResultSet rs = preparedStatement.executeQuery();
+                            if (rs.next()) {
+                                thCustomerName.setText(rs.getString("name"));
+                                thCustomerAddress.setText(rs.getString("address"));
+                                thCustomerNationality.setText(rs.getString("nationality"));
+                                thCustomerNumber.setText(rs.getString("phone"));
+                                thCustomerGender.setText(rs.getString("gender"));
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Cannot find customer with UID "
+                                        + findedCustomerUID);
+                                thCustomerName.setText("");
+                                thCustomerAddress.setText("");
+                                thCustomerNationality.setText("");
+                                thCustomerNumber.setText("");
+                                thCustomerGender.setText("");
+                            }
+                            rs.close();
+                            preparedStatement.close();
+                            conn.connection.close();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Cannot find customer with UID "
-                                + findedCustomerUID);
-                        thCustomerName.setText("");
-                        thCustomerAddress.setText("");
-                        thCustomerNationality.setText("");
-                        thCustomerNumber.setText("");
-                        thCustomerGender.setText("");
+                        JOptionPane.showMessageDialog(null, "Customer not found");
                     }
-                    rs.close();
-                    preparedStatement.close();
-                    conn.connection.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Customer ID is incorrect");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Customer not found");
             }
-        }
             if (e.getSource() == fetchFlightButton) {
                 getInfoFromFlightTableForTextHolders(thFlightName, thFlightCode,source, destination,
                         "SELECT * FROM flight WHERE source = ? AND destination = ?");
-
-                /*
-                String src = source.getSelectedItem();
-                String dst = destination.getSelectedItem();
-                try {
-                    Connections conn = new Connections();
-                    String query = "SELECT f_name FROM flight WHERE source = ? AND destination = ?";
-                    PreparedStatement preparedStatement = conn.connection.prepareStatement(query);
-                    preparedStatement.setString(1, src);
-                    preparedStatement.setString(2, dst);
-                    ResultSet rs = preparedStatement.executeQuery();
-                    while (rs.next()) {
-                        thFlightName.setText(rs.getString("f_name"));
-                    }
-                    rs.close();
-                    preparedStatement.close();
-                    conn.connection.close();
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }*/
             }
             if (e.getSource() == bookFlightButton) {
 

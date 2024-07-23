@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../mysqlConnector/mysql-connector-j-9.0.0" />
       <root url="jar://$PROJECT_DIR$/../../rs2xml/rs2xml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../JavaImportTools/jcalendar-tz-1.3.3-4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
