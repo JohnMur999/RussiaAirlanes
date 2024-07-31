@@ -11,13 +11,6 @@ public class Home extends JFrame implements ActionListener {
         backgroundImage.setBounds(0, 0, imageIcon.getIconWidth(), imageIcon.getIconHeight());
         add(backgroundImage);
 
-        /* JLabel headingLabel = new JLabel("Welcome to Russia airlanes managment system");
-        headingLabel.setBounds(500,10,1000,200);
-        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        headingLabel.setForeground(Color.BLACK);
-        headingLabel.setFont(new Font("Serif", Font.PLAIN, 40));
-        backgroundImage.add(headingLabel); */
-
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         JMenu fileMenu = new JMenu("File");
@@ -94,7 +87,7 @@ public class Home extends JFrame implements ActionListener {
             new BookFlight();
         }
         if (e.getActionCommand().equals("JourneyDetails")) {
-
+            new JourneyDetails();
         }
         if (e.getActionCommand().equals("TicketCancellation")) {
 
